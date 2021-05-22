@@ -1,4 +1,4 @@
-# pms-front
+# thdc-delta-dental-front-app
 
 ## Project setup
 ```
