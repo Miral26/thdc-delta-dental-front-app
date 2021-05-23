@@ -155,17 +155,17 @@ export default {
     return {
       columns: [
         {
-          label: "First Name",
-          field: "first_name",
+          label: "Name",
+          field: "name",
         },
-        {
-          label: "Last Name",
-          field: "last_name",
-        },
-        {
-          label: "Appointment Date",
-          field: "appointment_date",
-        },
+        // {
+        //   label: "Last Name",
+        //   field: "last_name",
+        // },
+        // {
+        //   label: "Appointment Date",
+        //   field: "appointment_date",
+        // },
         {
           label: "Charge Date",
           field: "charge_date",
@@ -174,18 +174,18 @@ export default {
           label: "Payment Amount",
           field: "payment_amount",
         },
-        {
-          label: "Notes",
-          field: "notes",
-        },
+        // {
+        //   label: "Notes",
+        //   field: "notes",
+        // },
         {
           label: "Appointment Loc",
           field: "appointment_loc",
         },
-        {
-          label: "Ins Policy #",
-          field: "ins_policy",
-        },
+        // {
+        //   label: "Ins Policy #",
+        //   field: "ins_policy",
+        // },
         {
           label: "Status",
           field: "status",
@@ -194,14 +194,14 @@ export default {
           label: "Email",
           field: "email",
         },
-        {
-          label: "Phone",
-          field: "phone",
-        },
-        {
-          label: "Customer Card",
-          field: "customer_card",
-        },
+        // {
+        //   label: "Phone",
+        //   field: "phone",
+        // },
+        // {
+        //   label: "Customer Card",
+        //   field: "customer_card",
+        // },
         {
           label: "Action",
           field: "action",

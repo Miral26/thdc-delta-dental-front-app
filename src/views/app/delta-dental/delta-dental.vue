@@ -557,7 +557,7 @@ export default {
   position: relative;
   font-weight: bold;
   color: #05070b;
-  padding: 10px 5px 5px;
+  padding: 10px 10px 5px;
 }
 .tabs .nav-tabs .nav-item .nav-link.active:before {
   content: "";
