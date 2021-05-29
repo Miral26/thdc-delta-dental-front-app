@@ -198,10 +198,10 @@ export default {
         //   label: "Phone",
         //   field: "phone",
         // },
-        // {
-        //   label: "Customer Card",
-        //   field: "customer_card",
-        // },
+        {
+          label: "Customer Card",
+          field: "customer_card",
+        },
         {
           label: "Action",
           field: "action",
