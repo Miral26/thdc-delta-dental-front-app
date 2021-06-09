@@ -73,18 +73,39 @@
             <div class="pr-3 auth-right">
               <router-link
                 to="signUp"
-                class="btn btn-rounded btn-outline-primary btn-outline-email btn-block btn-icon-text"
+                class="
+                  btn
+                  btn-rounded
+                  btn-outline-primary
+                  btn-outline-email
+                  btn-block
+                  btn-icon-text
+                "
                 href="signup.html"
               >
                 <i class="i-Mail-with-At-Sign"></i> Sign up with Email
               </router-link>
               <a
-                class="btn btn-rounded btn-outline-primary btn-outline-google btn-block btn-icon-text"
+                class="
+                  btn
+                  btn-rounded
+                  btn-outline-primary
+                  btn-outline-google
+                  btn-block
+                  btn-icon-text
+                "
               >
                 <i class="i-Google-Plus"></i> Sign up with Google
               </a>
               <a
-                class="btn btn-rounded btn-outline-primary btn-block btn-icon-text btn-outline-facebook"
+                class="
+                  btn
+                  btn-rounded
+                  btn-outline-primary
+                  btn-block
+                  btn-icon-text
+                  btn-outline-facebook
+                "
               >
                 <i class="i-Facebook-2"></i> Sign up with Facebook
               </a>
@@ -97,6 +118,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { signIn } from "./APICalls";
 export default {
   name: "signIn",
   metaInfo: {
@@ -121,9 +143,31 @@ export default {
   },
 
   methods: {
-    ...mapActions(["login"]),
+    ...mapActions(["login", "setUser"]),
     formSubmit() {
-      this.login({ email: this.email, password: this.password });
+      signIn({ email: this.email, password: this.password })
+        .then((resp) => {
+          console.log(`resp signin`, resp);
+          if (resp && resp.status === 200) {
+            this.setUser(resp.data.authenticatedUser);
+            const userInfo = {
+              access: resp.data.access,
+              refresh: resp.data.refresh,
+              authenticatedUser: resp.data.authenticatedUser,
+            };
+            localStorage.setItem("userInfo", JSON.stringify(userInfo)); // store the token in localstorage
+            setTimeout(() => {
+              this.$router.push("/app/delta-dental");
+              this.makeToast("success", resp.data.message);
+            }, 1000);
+          } else {
+            this.makeToast("danger", "Invalid login credentials");
+          }
+        })
+        .catch((error) => {
+          this.makeToast("danger", "Invalid login credentials");
+          localStorage.removeItem("userInfo"); // if the request fails, remove any possible user token if possible
+        });
     },
     makeToast(variant = null, msg) {
       this.$bvToast.toast(msg, {

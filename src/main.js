@@ -11,28 +11,28 @@ import store from "./store";
 import Breadcumb from "./components/breadcumb";
 import firebase from "firebase/app";
 import "firebase/auth";
-import {firebaseSettings} from "@/data/config";
+import { firebaseSettings } from "@/data/config";
 import i18n from "./lang/lang";
-import DateRangePicker from 'vue2-daterange-picker'
+import VueAxios from 'vue-axios';
+import axios from './plugins/axios'; // this is all about to change
 //you need to import the CSS manually (in case you want to override it)
 import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
 //import material-icon scss
 import "font-awesome/css/font-awesome.min.css";
- 
+
 //defined as global component
 Vue.component('VueFontawesome', require('vue-fontawesome-icon/VueFontawesome.vue').default);
 
 Vue.component("breadcumb", Breadcumb);
 import InstantSearch from 'vue-instantsearch';
 // Vue.use(VueRouter);
- 
 
+Vue.use(VueAxios, axios);
 
 Vue.use(InstantSearch);
 Vue.use(GullKit);
 
 firebase.initializeApp(firebaseSettings);
-
 
 
 Vue.config.productionTip = false;

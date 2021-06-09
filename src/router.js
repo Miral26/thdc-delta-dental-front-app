@@ -13,6 +13,7 @@ import Landing from './containers/layouts/landing/landing.vue'
 import Contact from './containers/layouts/contact/contact.vue'
 import BookAppointment from './views/app/virtual-consults/virtual-consults.vue'
 import DeltaDental from './views/app/delta-dental/delta-dental.vue'
+import Patients from './views/app/patients/patients.vue'
 import signIn from './views/app/sessions/signIn'
 import signUp from './views/app/sessions/signUp.vue'
 import forgot from './views/app/sessions/forgot.vue'
@@ -73,7 +74,11 @@ const routes = [
       {
         path: "/app/delta-dental",
         component: DeltaDental,
-      }
+      },
+      {
+        path: "/app/patients",
+        component: Patients,
+      },
     ]
   },
   route("vertical-sidebar", 'vertical-sidebar', VerticalSidebar),
@@ -95,9 +100,9 @@ const router = new Router({
 
 router.afterEach(() => {
   // Remove initial loading
-  const gullPreLoading = document.getElementById("loading_wrap");
-  if (gullPreLoading) {
-    gullPreLoading.style.display = "none";
+  const preLoading = document.getElementById("page-loader");
+  if (preLoading) {
+    preLoading.classList.add('hide')
   }
   // Complete the animation of the route progress bar.
   // if (isMobile) {

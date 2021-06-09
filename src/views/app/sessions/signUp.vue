@@ -20,18 +20,39 @@
               <div class="w-100 mb-30">
                 <router-link
                   to="signIn"
-                  class="btn btn-outline-primary btn-outline-email btn-block btn-icon-text btn-rounded"
+                  class="
+                    btn
+                    btn-outline-primary
+                    btn-outline-email
+                    btn-block
+                    btn-icon-text
+                    btn-rounded
+                  "
                   href="signin.html"
                 >
                   <i class="i-Mail-with-At-Sign"></i> Sign in with Email
                 </router-link>
                 <a
-                  class="btn btn-outline-primary btn-outline-google btn-block btn-icon-text btn-rounded"
+                  class="
+                    btn
+                    btn-outline-primary
+                    btn-outline-google
+                    btn-block
+                    btn-icon-text
+                    btn-rounded
+                  "
                 >
                   <i class="i-Google-Plus"></i> Sign in with Google
                 </a>
                 <a
-                  class="btn btn-outline-primary btn-outline-facebook btn-block btn-icon-text btn-rounded"
+                  class="
+                    btn
+                    btn-outline-primary
+                    btn-outline-facebook
+                    btn-block
+                    btn-icon-text
+                    btn-rounded
+                  "
                 >
                   <i class="i-Facebook-2"></i> Sign in with Facebook
                 </a>
@@ -128,7 +149,6 @@
                 >
                 <p v-once class="typo__p" v-if="submitStatus === 'OK'">
                   {{ makeToastTwo("success") }}
-                  {{ this.$router.push("/") }}
                 </p>
                 <p v-once class="typo__p" v-if="submitStatus === 'ERROR'">
                   {{ makeToast("danger") }}
@@ -153,6 +173,7 @@
 <script>
 import { required, sameAs, minLength } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
+import { signUp } from "./APICalls";
 export default {
   name: "siginUp",
   metaInfo: {
@@ -209,35 +230,32 @@ export default {
     ...mapActions(["signUserUp"]),
     //   validate form
     submit() {
-      console.log("submit!");
-
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR";
       } else {
-        this.signUserUp({ 
-            first_name: this.fName, 
-            last_name: this.lName, 
-            email: this.email,
-            password1: this.password,
-            password2: this.repeatPassword
-        }).then(data=>{
-          this.makeToast("success", "Please confirm email verification before you do signin.");
-          setTimeout(() => {
-            this.submitStatus = "OK";
-          }, 1000);
-        }).catch(err=>{
-          console.log('here!#2e2323', err.response)
-          if(err.response && err.response.data && err.response.data.email){
-            this.makeToast("danger", err.response.data.email[0]);
-          }else{
-            this.submitStatus = "ERROR";
-          }
-        });
-        // this.submitStatus = "PENDING";
-        // setTimeout(() => {
-        //   this.submitStatus = "OK";
-        // }, 1000);
+        signUp({
+          first_name: this.fName,
+          last_name: this.lName,
+          email: this.email,
+          password1: this.password,
+          password2: this.repeatPassword,
+        })
+          .then((resp) => {
+            console.log(`resp`, resp);
+            console.log(`resp.response`, resp.response);
+            if (resp && resp.status === 200) {
+              this.makeToast("success", resp.data.message);
+              this.$router.push("/signIn");
+            }
+          })
+          .catch((err) => {
+            if (err && err.response && err.response.data) {
+              localStorage.removeItem("userInfo"); // if the request fails, remove any possible user token if possible
+              this.makeToast("danger", JSON.stringify(err.response.data));
+            }
+            localStorage.removeItem("userInfo"); // if the request fails, remove any possible user token if possible
+          });
       }
     },
     makeToast(variant = null, msg = "Please fill the form correctly.") {

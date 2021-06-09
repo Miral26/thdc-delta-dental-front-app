@@ -264,6 +264,14 @@ blockquote {
   background-color: transparent;
   color: #111827;
 }
+.btn-secondary,
+.btn-secondary:hover {
+  border-color: #9CA3AF;
+}
+.dropdown-toggle.btn {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
 
 .billing-dropdown li .dropdown,
 .billing-dropdown li .dropdown-toggle {
@@ -306,9 +314,29 @@ blockquote {
 .main-header .header-part-right .datepicker-input button:hover {
   background-color: #6cdcd4;
 }
-
+.b-form-datepicker {
+  &.icon-none {
+    > button {
+      width: 0;
+      opacity: 0;
+      visibility: hidden;
+      padding: 0;
+    }
+  }
+  .dropdown-menu {
+    margin-left: -1px;
+  }
+}
 .b-calendar {
   background-color: #f2f7fc;
+  .b-calendar-inner {
+    .form-control:focus {
+      background-color: transparent;
+    }
+  }
+}
+.b-calendar .bg-light {
+  background-color: transparent !important;
 }
 .btn.btn-primary {
   color: #fff;
@@ -370,16 +398,88 @@ blockquote {
     background-color: transparent;
   }
 
-  .table-list {
-    .vgt-inner-wrap {
-      box-shadow: none;
-    }
-    .vgt-global-search.vgt-clearfix,
-    table.tableOne.vgt-table thead tr th,
-    table.vgt-table td,
-    table.vgt-table,
-    table.tableOne tbody tr th.line-numbers,
-    div.vgt-wrap__footer.vgt-clearfix {
-        background: transparent;
+.default-timepicker {
+  .b-time-header {
+    display: none;
+  }
+  .b-time-footer {
+    display: none;
+  }
+  &.show-header {
+    .b-time-header {
+      display: block;
     }
   }
+  &.show-footer {
+    .b-time-footer {
+      display: block;
+    }
+  }
+  .dropdown-menu {
+    .b-time {
+      background-color: #fff;
+    }
+    box-shadow: none;
+    background-color: transparent;
+  }
+  .b-form-spinbutton {
+    padding: 10px 7px;
+    &.focus {
+      box-shadow: none;
+      border-color: #6cdcd4;
+    }
+    .btn {
+      padding: 5px 5px;
+    }
+  }
+}
+.default-timepicker.b-form-timepicker {
+  >.btn {
+    opacity: 0;
+    visibility: hidden;
+    padding: 0;
+    width: 0;
+  }
+} 
+.gender-dropdown.b-dropdown,
+.gender-dropdown.b-dropdown .btn {
+  width: 100%;
+  text-align: left;
+}
+.gender-dropdown ul.dropdown-menu {
+  min-width: auto;
+  width: 100%;
+}
+
+.table-list {
+  .vgt-inner-wrap {
+    box-shadow: none;
+  }
+  .vgt-global-search.vgt-clearfix,
+  table.tableOne.vgt-table thead tr th,
+  table.vgt-table td,
+  table.vgt-table,
+  table.tableOne tbody tr th.line-numbers,
+  div.vgt-wrap__footer.vgt-clearfix {
+      background: transparent;
+  }
+}
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+ 
+.spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  border-top-color: #4a4949;
+  animation: spinner .6s linear infinite;
+}

@@ -13,7 +13,15 @@
     :settings="{ suppressScrollX: true, wheelPropagation: false }"
   >
     <div
-      class="gull-brand text-center d-flex align-items-center pl-2 mb-4 justify-content-center"
+      class="
+        gull-brand
+        text-center
+        d-flex
+        align-items-center
+        pl-2
+        mb-4
+        justify-content-center
+      "
     >
       <img class="logo" src="@/assets/images/new-logo.png" />
     </div>
@@ -72,13 +80,15 @@
                 aria-haspopup="true"
                 aria-expanded="false"
               />
-              <span>Alexa smith</span>
+              <span>{{
+                (loggedInUser && loggedInUser.full_name) || "Guest"
+              }}</span>
               <i class="i-Arrow-Down"></i>
             </template>
 
             <div class="dropdown-menu-right" aria-labelledby="userDropdown">
               <div class="dropdown-header">
-                <i class="i-Lock-User mr-1"></i> Timothy Carlson
+                {{ (loggedInUser && loggedInUser.full_name) || "Guest" }}
               </div>
               <a class="dropdown-item">Profile Update</a>
               <a class="dropdown-item">Change Password</a>
@@ -97,7 +107,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {},
   computed: {
-    ...mapGetters(["getVerticalCompact", "getVerticalSidebar"]),
+    ...mapGetters(["getVerticalCompact", "getVerticalSidebar", "loggedInUser"]),
   },
   data() {
     return {
@@ -109,10 +119,17 @@ export default {
           icon: "i-Calendar-4",
           redirectTo: "/app/delta-dental",
         },
+        {
+          title: "Patients",
+          selectedParentMenu: "patients",
+          icon: "i-Checked-User",
+          redirectTo: "/app/patients",
+        },
       ],
     };
   },
   mounted() {
+    console.log(`this.loggedInUser`, this.loggedInUser);
     this.toggleSelectedParentMenu();
     document.addEventListener("click", this.returnSelectedParentMenu);
   },
