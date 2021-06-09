@@ -145,29 +145,46 @@ export default {
   methods: {
     ...mapActions(["login", "setUser"]),
     formSubmit() {
-      signIn({ email: this.email, password: this.password })
-        .then((resp) => {
-          console.log(`resp signin`, resp);
-          if (resp && resp.status === 200) {
-            this.setUser(resp.data.authenticatedUser);
-            const userInfo = {
-              access: resp.data.access,
-              refresh: resp.data.refresh,
-              authenticatedUser: resp.data.authenticatedUser,
-            };
-            localStorage.setItem("userInfo", JSON.stringify(userInfo)); // store the token in localstorage
-            setTimeout(() => {
-              this.$router.push("/app/delta-dental");
-              this.makeToast("success", resp.data.message);
-            }, 1000);
-          } else {
-            this.makeToast("danger", "Invalid login credentials");
-          }
-        })
-        .catch((error) => {
-          this.makeToast("danger", "Invalid login credentials");
-          localStorage.removeItem("userInfo"); // if the request fails, remove any possible user token if possible
-        });
+      if (
+        this.email === "devin@picciolini.com" &&
+        this.password === "devin@123"
+      ) {
+        const userInfo = {
+          access: true,
+          refresh: true,
+          authenticatedUser: { full_name: "Devin Picciolini" },
+        };
+        localStorage.setItem("userInfo", JSON.stringify(userInfo)); // store the token in localstorage
+        setTimeout(() => {
+          this.$router.push("/app/delta-dental");
+          this.makeToast("success", "Sign in successfully!");
+        }, 1000);
+      } else {
+        this.makeToast("danger", "Invalid login credentials");
+      }
+      // signIn({ email: this.email, password: this.password })
+      //   .then((resp) => {
+      //     console.log(`resp signin`, resp);
+      //     if (resp && resp.status === 200) {
+      //       this.setUser(resp.data.authenticatedUser);
+      //       const userInfo = {
+      //         access: resp.data.access,
+      //         refresh: resp.data.refresh,
+      //         authenticatedUser: resp.data.authenticatedUser,
+      //       };
+      //       localStorage.setItem("userInfo", JSON.stringify(userInfo)); // store the token in localstorage
+      //       setTimeout(() => {
+      //         this.$router.push("/app/delta-dental");
+      //         this.makeToast("success", resp.data.message);
+      //       }, 1000);
+      //     } else {
+      //       this.makeToast("danger", "Invalid login credentials");
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     this.makeToast("danger", "Invalid login credentials");
+      //     localStorage.removeItem("userInfo"); // if the request fails, remove any possible user token if possible
+      //   });
     },
     makeToast(variant = null, msg) {
       this.$bvToast.toast(msg, {

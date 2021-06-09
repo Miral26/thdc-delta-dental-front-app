@@ -119,12 +119,12 @@ export default {
           icon: "i-Calendar-4",
           redirectTo: "/app/delta-dental",
         },
-        {
-          title: "Patients",
-          selectedParentMenu: "patients",
-          icon: "i-Checked-User",
-          redirectTo: "/app/patients",
-        },
+        // {
+        //   title: "Patients",
+        //   selectedParentMenu: "patients",
+        //   icon: "i-Checked-User",
+        //   redirectTo: "/app/patients",
+        // },
       ],
     };
   },

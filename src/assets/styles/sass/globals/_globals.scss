@@ -441,14 +441,18 @@ blockquote {
     width: 0;
   }
 } 
-.gender-dropdown.b-dropdown,
-.gender-dropdown.b-dropdown .btn {
+.default-dropdown.b-dropdown,
+.default-dropdown.b-dropdown .btn {
   width: 100%;
   text-align: left;
 }
-.gender-dropdown ul.dropdown-menu {
+.default-dropdown ul.dropdown-menu {
   min-width: auto;
   width: 100%;
+}
+.default-dropdown .btn-secondary:focus {
+  box-shadow: none !important; 
+  -webkit-box-shadow: none !important
 }
 
 .table-list {

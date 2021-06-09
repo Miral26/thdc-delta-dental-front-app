@@ -78,7 +78,7 @@
                   <div class="col-md-4">
                     <b-form-group class="mb-3" label="Gender">
                       <b-dropdown
-                        class="gender-dropdown"
+                        class="default-dropdown"
                         :text="patientForm.gender || 'Select a gender'"
                       >
                         <b-dropdown-item @click="patientForm.gender = ''"

@@ -51,14 +51,14 @@
         >
           <div>
             <b-col>
-              <b-form>
+              <b-form @submit.prevent="submit">
                 <div class="row">
                   <div class="col-md-6">
                     <b-form-group class="mb-3" label="First Name">
                       <b-form-input
                         type="text"
                         required
-                        v-model="getDeltaDentalForm.first_name"
+                        v-model="$v.form.first_name.$model"
                       ></b-form-input>
                     </b-form-group>
                   </div>
@@ -67,7 +67,7 @@
                       <b-form-input
                         type="text"
                         required
-                        v-model="getDeltaDentalForm.last_name"
+                        v-model="$v.form.last_name.$model"
                       ></b-form-input>
                     </b-form-group>
                   </div>
@@ -82,7 +82,7 @@
                           month: 'numeric',
                           day: 'numeric',
                         }"
-                        v-model="getDeltaDentalForm.appointment_date"
+                        v-model="$v.form.appointment_date.$model"
                         :min="new Date()"
                       ></b-form-datepicker>
                     </b-form-group>
@@ -92,7 +92,7 @@
                       <b-form-input
                         type="text"
                         required
-                        v-model="getDeltaDentalForm.appointment_loc"
+                        v-model="$v.form.appointment_location.$model"
                       ></b-form-input>
                     </b-form-group>
                   </div>
@@ -104,33 +104,31 @@
                       <b-form-input
                         type="text"
                         required
-                        v-model="getDeltaDentalForm.ins_policy"
+                        v-model="$v.form.insurance_policy.$model"
                       ></b-form-input>
                     </b-form-group>
                   </div>
                   <div class="col-md-6">
                     <b-form-group class="mb-3" label="Status">
                       <b-dropdown
-                        class="provider-dropdown mb-2 mr-5"
+                        class="default-dropdown mb-2 mr-5"
                         :text="
-                          getDeltaDentalForm.status === ''
+                          form.status === ''
                             ? 'Please select status'
-                            : getDeltaDentalForm.status
+                            : form.status
                         "
                       >
-                        <b-dropdown-item
-                          value=""
-                          @click="getDeltaDentalForm.status = ''"
+                        <b-dropdown-item value="" @click="form.status = ''"
                           >Please select status</b-dropdown-item
                         >
                         <b-dropdown-item
                           value="pending"
-                          @click="getDeltaDentalForm.status = 'Pending'"
+                          @click="form.status = 'Pending'"
                           >Pending</b-dropdown-item
                         >
                         <b-dropdown-item
                           value="completed"
-                          @click="getDeltaDentalForm.status = 'Completed'"
+                          @click="form.status = 'Completed'"
                           >Completed</b-dropdown-item
                         >
                       </b-dropdown>
@@ -144,7 +142,7 @@
                       <b-form-input
                         type="email"
                         required
-                        v-model="getDeltaDentalForm.email"
+                        v-model="$v.form.email_address.$model"
                       ></b-form-input>
                     </b-form-group>
                   </div>
@@ -153,7 +151,7 @@
                       <b-form-input
                         type="text"
                         required
-                        v-model="getDeltaDentalForm.phone"
+                        v-model="$v.form.phone.$model"
                       ></b-form-input>
                     </b-form-group>
                   </div>
@@ -169,7 +167,7 @@
                           day: 'numeric',
                         }"
                         :min="new Date()"
-                        v-model="getDeltaDentalForm.charge_date"
+                        v-model="$v.form.charge_date.$model"
                       ></b-form-datepicker>
                     </b-form-group>
                   </div>
@@ -179,7 +177,7 @@
                         type="number"
                         min="0"
                         required
-                        v-model="getDeltaDentalForm.payment_amount"
+                        v-model="$v.form.payment_amount.$model"
                       ></b-form-input>
                     </b-form-group>
                   </div>
@@ -191,7 +189,7 @@
                       <b-form-textarea
                         rows="5"
                         required
-                        v-model="getDeltaDentalForm.notes"
+                        v-model="$v.form.notes.$model"
                       ></b-form-textarea>
                     </b-form-group>
                   </div>
@@ -199,17 +197,22 @@
                 <div class="row">
                   <div class="col-md-12">
                     <b-button
+                      type="submit"
                       size="sm"
                       class="btn-radius"
                       variant="primary"
-                      @click="
-                        getDeltaDentalForm && getDeltaDentalForm.id
-                          ? updateRecord(getDeltaDentalForm)
-                          : saveRecord(getDeltaDentalForm);
-                        $bvModal.hide('add-delta-dental');
-                      "
+                      :disabled="$v.$invalid"
                     >
-                      Save
+                      <div class="d-flex">
+                        <span :class="actionLoading ? 'mr-3' : ''">{{
+                          actionLoading
+                            ? "Saving..."
+                            : form.id
+                            ? "Update"
+                            : "Save"
+                        }}</span>
+                        <span class="spinner" v-if="actionLoading"></span>
+                      </div>
                     </b-button>
                     <b-button
                       size="sm"
@@ -444,7 +447,7 @@
 </template>
 <script>
 import Table from "./table";
-
+import { required, minLength, email } from "vuelidate/lib/validators";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -453,6 +456,21 @@ export default {
   },
   data() {
     return {
+      form: {
+        first_name: "",
+        last_name: "",
+        appointment_date: new Date(),
+        appointment_location: "",
+        insurance_policy: "",
+        status: "",
+        email_address: "",
+        phone: "",
+        charge_date: new Date(),
+        payment_amount: 0,
+        notes: "",
+      },
+      actionLoading: false,
+      data: [],
       customerCardForm: {
         card_number: "",
         expiry_date: "",
@@ -494,6 +512,21 @@ export default {
         },
       ],
     };
+  },
+  validations: {
+    form: {
+      first_name: { required, minLength: minLength(4) },
+      last_name: { required, minLength: minLength(4) },
+      appointment_date: { required },
+      appointment_location: { required },
+      insurance_policy: { required },
+      status: { required },
+      email_address: { required, email: email() },
+      phone: { required },
+      charge_date: { required },
+      payment_amount: { required },
+      notes: { required },
+    },
   },
   computed: {
     ...mapGetters([
